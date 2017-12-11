@@ -6,16 +6,18 @@
 package hello;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,9 +31,14 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author ardi widodo
  */
-@MappedSuperclass
+@Entity
 @Table(name = "language")
 @XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Language.findAll", query = "SELECT l FROM Language l")
+    , @NamedQuery(name = "Language.findByLanguageId", query = "SELECT l FROM Language l WHERE l.languageId = :languageId")
+    , @NamedQuery(name = "Language.findByName", query = "SELECT l FROM Language l WHERE l.name = :name")
+    , @NamedQuery(name = "Language.findByLastUpdate", query = "SELECT l FROM Language l WHERE l.lastUpdate = :lastUpdate")})
 public class Language implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,9 +58,9 @@ public class Language implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "languageId", fetch = FetchType.LAZY)
-    private List<Film> filmList;
+    private Collection<Film> filmCollection;
     @OneToMany(mappedBy = "originalLanguageId", fetch = FetchType.LAZY)
-    private List<Film> filmList1;
+    private Collection<Film> filmCollection1;
 
     public Language() {
     }
@@ -93,21 +100,21 @@ public class Language implements Serializable {
     }
 
     @XmlTransient
-    public List<Film> getFilmList() {
-        return filmList;
+    public Collection<Film> getFilmCollection() {
+        return filmCollection;
     }
 
-    public void setFilmList(List<Film> filmList) {
-        this.filmList = filmList;
+    public void setFilmCollection(Collection<Film> filmCollection) {
+        this.filmCollection = filmCollection;
     }
 
     @XmlTransient
-    public List<Film> getFilmList1() {
-        return filmList1;
+    public Collection<Film> getFilmCollection1() {
+        return filmCollection1;
     }
 
-    public void setFilmList1(List<Film> filmList1) {
-        this.filmList1 = filmList1;
+    public void setFilmCollection1(Collection<Film> filmCollection1) {
+        this.filmCollection1 = filmCollection1;
     }
 
     @Override
@@ -132,7 +139,7 @@ public class Language implements Serializable {
 
     @Override
     public String toString() {
-        return "hallo.Language[ languageId=" + languageId + " ]";
+        return "hello.Language[ languageId=" + languageId + " ]";
     }
     
 }

@@ -9,10 +9,12 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,9 +26,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author ardi widodo
  */
-@MappedSuperclass
+@Entity
 @Table(name = "actor")
 @XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Actor.findAll", query = "SELECT a FROM Actor a")
+    , @NamedQuery(name = "Actor.findByActorId", query = "SELECT a FROM Actor a WHERE a.actorId = :actorId")
+    , @NamedQuery(name = "Actor.findByFirstName", query = "SELECT a FROM Actor a WHERE a.firstName = :firstName")
+    , @NamedQuery(name = "Actor.findByLastName", query = "SELECT a FROM Actor a WHERE a.lastName = :lastName")
+    , @NamedQuery(name = "Actor.findByLastUpdate", query = "SELECT a FROM Actor a WHERE a.lastUpdate = :lastUpdate")})
 public class Actor implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -119,7 +127,7 @@ public class Actor implements Serializable {
 
     @Override
     public String toString() {
-        return "hallo.Actor[ actorId=" + actorId + " ]";
+        return "hello.Actor[ actorId=" + actorId + " ]";
     }
     
 }
