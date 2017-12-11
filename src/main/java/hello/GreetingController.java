@@ -18,9 +18,11 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sound.sampled.Line;
 
 import org.omg.CORBA.PUBLIC_MEMBER;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,13 +37,21 @@ public class GreetingController {
 
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
+      @Autowired
+	  private Greeting x;
+    @Autowired
+    private EntityManagerFactory em;
+    @RequestMapping("/Actor")
+    public List<Actor> allActors(){
+    	return em.createEntityManager().createQuery("from Actor").getResultList();
+    }
 
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        return new Greeting(counter.incrementAndGet(),
-                            String.format(template, name));
+       // return new Greeting(counter.incrementAndGet(),
+         //                   String.format(template, name));*/
         
-        
+        return x;
     }
     @RequestMapping ("/data")
     public List<String> dataNegara(@RequestParam("pre") String prefix){
