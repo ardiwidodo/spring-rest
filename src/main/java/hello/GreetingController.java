@@ -39,12 +39,25 @@ public class GreetingController {
     private final AtomicLong counter = new AtomicLong();
       @Autowired
 	  private Greeting x;
-    @Autowired
+    @Autowired // untuk objek dari kelas tertentu yang sudh ada
     private EntityManagerFactory em;
     @RequestMapping("/Actor")
-    public List<Actor> allActors(){
-    	return em.createEntityManager().createQuery("from Actor").getResultList();
+    public  List <Actor> allActors(){
+    	return em.createEntityManager().createQuery("from Actor").getResultList();// from aktor itu manggil kelas bukan tabel
+    	
     }
+    @RequestMapping("/Film")
+    public List <Film>  allFilm(){
+    	return em.createEntityManager().createQuery("from Film").getResultList();
+    
+    }
+    @RequestMapping("/FilmActor")
+    public List <FilmActor> allFilmActor(){
+    	return em.createEntityManager().createQuery("from FilmActor").getResultList();
+    
+    }
+    
+       
 
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) {
